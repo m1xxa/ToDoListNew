@@ -10650,29 +10650,39 @@ function addToList() {
         var description = users[users.length - 1].getTasks()[i].description || "";
         var deadline = users[users.length - 1].getTasks()[i].deadline || "";
         li.innerHTML = "<b>" + type + ": </b>" + title + " " + status + " " + description + " " + deadline;
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode('\xD7');
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
         list.appendChild(li);
     }
     var tasklist = document.getElementById("tasklist");
     tasklist.innerHTML = "";
     tasklist.appendChild(list);
 
-    var closeButtons = document.getElementsByClassName("list-group-item");
+    var closeButtons = document.getElementsByClassName("close");
 
     var _loop = function _loop(_i) {
-        closeButtons[_i].ondblclick = function () {
-            console.log("before", users[users.length - 1].getTasks());
+        closeButtons[_i].onclick = function () {
             var t = users[users.length - 1].getTasks();
             t.splice(_i, 1);
             users[users.length - 1].setTasks(t);
-            console.log("after", users[users.length - 1].getTasks());
-
-            this.parentNode.removeChild(this);
+            this.parentNode.parentNode.removeChild(this.parentNode);
         };
     };
 
     for (var _i = 0; _i < closeButtons.length; _i++) {
         _loop(_i);
     }
+
+    var ulElement = document.querySelector('li');
+    ulElement.addEventListener('click', function (ev) {
+        alert("ckasd");
+        if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+    }, false);
 }
 
 /***/ }),

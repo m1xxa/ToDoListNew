@@ -180,22 +180,25 @@ function addToList(){
         let description = users[users.length-1].getTasks()[i].description || "";
         let deadline = users[users.length-1].getTasks()[i].deadline || "";
         li.innerHTML = "<b>" + type + ": </b>" + title + " " + status + " " + description + " " + deadline;
+        const span = document.createElement("SPAN");
+        const txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
         list.appendChild(li);
     }
     let tasklist = document.getElementById("tasklist");
     tasklist.innerHTML = "";
     tasklist.appendChild(list);
 
-    const closeButtons = document.getElementsByClassName("list-group-item");
+    const closeButtons = document.getElementsByClassName("close");
     for(let i = 0; i < closeButtons.length; i++){
-        closeButtons[i].ondblclick = function(){
-            console.log("before", users[users.length - 1].getTasks());
+        closeButtons[i].onclick = function(){
             let t = users[users.length - 1].getTasks();
             t.splice(i, 1);
             users[users.length - 1].setTasks(t);
-            console.log("after", users[users.length - 1].getTasks());
-
-            this.parentNode.removeChild(this);
+            this.parentNode.parentNode.removeChild(this.parentNode);
         };
     }
 }
+
