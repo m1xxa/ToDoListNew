@@ -1,11 +1,11 @@
 import $ from 'jquery';
+import userStorage from "./Storage";
+import roles from './constants';
 import User from './User';
 import getTask from './Task';
 import Student from "./Student";
 import Developer from "./Developer";
 
-let users = [];
-const roles = ["User", "Student", "Developer"];
 
 $( "#role-selector" ).change(function() {
     const roleSelector = document.getElementById("role-selector");
@@ -56,28 +56,27 @@ $("#create-user-btn").click(function () {
     switch(role){
         case roles[0] :
             const user = new User(userInfo);
-            users.push(user);
+            userStorage.addUser(user);
             showTasksUi(user);
             showAvailableTabs(userInfo);
             addToList();
             break;
         case roles[1] :
             const student = new Student(userInfo);
-            users.push(student);
+            userStorage.addUser(student);
             showTasksUi(student);
             showAvailableTabs(userInfo);
             addToList();
             break;
         case roles[2] :
             const developer = new Developer(userInfo);
-            users.push(developer);
+            userStorage.addUser(developer);
             showTasksUi(developer);
             showAvailableTabs(userInfo);
             addToList();
             break;
         default :
             alert("Please, select role");
-            console.log(users);
             break;
     }
 });
@@ -89,11 +88,9 @@ $("#add-simple").click(function () {
         title: simpleTaskForm.stTitle.value,
         status: simpleTaskForm.stStatus.value,
     };
-
-    users[users.length-1].addTask(getTask(taskInfo));
+    userStorage.getCurrentUser().addTask(getTask(taskInfo));
     simpleTaskForm.reset();
     addToList();
-    console.log(users);
 });
 
 $("#add-home").click(function () {
@@ -104,10 +101,9 @@ $("#add-home").click(function () {
         status: homeTaskForm.htStatus.value,
         description: homeTaskForm.htDescription.value,
     };
-    users[users.length-1].addTask(getTask(taskInfo));
+    userStorage.getCurrentUser().addTask(getTask(taskInfo));
     homeTaskForm.reset();
     addToList();
-    console.log(users);
 });
 
 $("#add-project").click(function () {
@@ -119,16 +115,16 @@ $("#add-project").click(function () {
         description: projectTaskForm.ptDescription.value,
         deadline: projectTaskForm.ptDeadline.value,
     };
-    users[users.length-1].addTask(getTask(taskInfo));
+    userStorage.getCurrentUser().addTask(getTask(taskInfo));
     projectTaskForm.reset();
     addToList();
-    console.log(users);
 });
 
 $(".sign-out").click(function () {
     showNewUserUi();
 });
 
+/* Show form for create new user */
 function showNewUserUi() {
     $(".user-inform").removeClass("d-none");
     $(".todo-data").addClass("d-none");
@@ -171,14 +167,14 @@ function showAvailableTabs(user) {
 /* Add user task to list */
 function addToList(){
     const list = window.document.createElement('ul');
-    for (let i = 0; i < users[users.length-1].getTasks().length; i++){
+    for (let i = 0; i < userStorage.getCurrentUser().getTasks().length; i++){
         const li = document.createElement('li');
         li.className = "list-group-item";
-        let type = users[users.length-1].getTasks()[i].type || "";
-        let title = users[users.length-1].getTasks()[i].title || "";
-        let status = users[users.length-1].getTasks()[i].status || "";
-        let description = users[users.length-1].getTasks()[i].description || "";
-        let deadline = users[users.length-1].getTasks()[i].deadline || "";
+        let type = userStorage.getCurrentUser().getTasks()[i].type || "";
+        let title = userStorage.getCurrentUser().getTasks()[i].title || "";
+        let status = userStorage.getCurrentUser().getTasks()[i].status || "";
+        let description = userStorage.getCurrentUser().getTasks()[i].description || "";
+        let deadline = userStorage.getCurrentUser().getTasks()[i].deadline || "";
         li.innerHTML = "<b>" + type + ": </b>" + title + " " + status + " " + description + " " + deadline;
         const span = document.createElement("SPAN");
         const txt = document.createTextNode("\u00D7");
@@ -194,11 +190,10 @@ function addToList(){
     const closeButtons = document.getElementsByClassName("close");
     for(let i = 0; i < closeButtons.length; i++){
         closeButtons[i].onclick = function(){
-            let t = users[users.length - 1].getTasks();
+            let t = userStorage.getCurrentUser().getTasks();
             t.splice(i, 1);
-            users[users.length - 1].setTasks(t);
+            userStorage.getCurrentUser().setTasks(t);
             this.parentNode.parentNode.removeChild(this.parentNode);
         };
     }
 }
-

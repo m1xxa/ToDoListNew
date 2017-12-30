@@ -1,6 +1,6 @@
 'use strict';
 
 import $ from 'jquery';
-import ui from './ui';
 import getTask from './Task';
-
+import Storage from "./Storage";
+import ui from './ui';
