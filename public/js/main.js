@@ -10511,7 +10511,7 @@ var _Storage2 = _interopRequireDefault(_Storage);
 
 var _constants = __webpack_require__(7);
 
-var _constants2 = _interopRequireDefault(_constants);
+var UI = _interopRequireWildcard(_constants);
 
 var _User = __webpack_require__(3);
 
@@ -10529,70 +10529,63 @@ var _Developer = __webpack_require__(8);
 
 var _Developer2 = _interopRequireDefault(_Developer);
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _jquery2.default)("#role-selector").change(function () {
-    var roleSelector = document.getElementById("role-selector");
-    var value = roleSelector.options[roleSelector.selectedIndex].value;
-
-    var userSpecializationBlock = (0, _jquery2.default)("#specialization");
-    var userJobBlock = (0, _jquery2.default)("#job");
+    var value = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
 
     switch (value) {
-        case _constants2.default[0]:
-            userSpecializationBlock.addClass("d-none");
-            userJobBlock.addClass("d-none");
+        case UI.roles[0]:
+            UI.userSpecializationBlock.addClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
-        case _constants2.default[1]:
-            userSpecializationBlock.removeClass("d-none");
-            userJobBlock.addClass("d-none");
+        case UI.roles[1]:
+            UI.userSpecializationBlock.removeClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
-        case _constants2.default[2]:
-            userSpecializationBlock.removeClass("d-none");
-            userJobBlock.removeClass("d-none");
+        case UI.roles[2]:
+            UI.userSpecializationBlock.removeClass("d-none");
+            UI.userJobBlock.removeClass("d-none");
             break;
         default:
-            userSpecializationBlock.addClass("d-none");
-            userJobBlock.addClass("d-none");
+            UI.userSpecializationBlock.addClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
     }
 });
 
 (0, _jquery2.default)(".sign-in").click(function () {
-    var welcomeScreen = (0, _jquery2.default)(".welcome-screen");
-    var userInform = (0, _jquery2.default)(".user-inform");
-    welcomeScreen.addClass("d-none");
-    userInform.removeClass("d-none");
+    UI.welcomeScreen.addClass("d-none");
+    UI.userInform.removeClass("d-none");
 });
 
 (0, _jquery2.default)("#create-user-btn").click(function () {
-    var roleSelector = document.getElementById("role-selector");
-    var role = roleSelector.options[roleSelector.selectedIndex].value;
-    var userForm = document.forms.userform;
-
+    var role = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
     var userInfo = {
-        name: userForm.elements.name.value,
-        surname: userForm.elements.surname.value,
-        specialization: userForm.elements.specialization.value,
-        jobtitle: userForm.elements.job.value,
+        name: UI.userForm.elements.name.value,
+        surname: UI.userForm.elements.surname.value,
+        specialization: UI.userForm.elements.specialization.value,
+        jobtitle: UI.userForm.elements.job.value,
         role: role
     };
     switch (role) {
-        case _constants2.default[0]:
+        case UI.roles[0]:
             var user = new _User2.default(userInfo);
             _Storage2.default.addUser(user);
             showTasksUi(user);
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case _constants2.default[1]:
+        case UI.roles[1]:
             var student = new _Student2.default(userInfo);
             _Storage2.default.addUser(student);
             showTasksUi(student);
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case _constants2.default[2]:
+        case UI.roles[2]:
             var developer = new _Developer2.default(userInfo);
             _Storage2.default.addUser(developer);
             showTasksUi(developer);
@@ -10606,41 +10599,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 (0, _jquery2.default)("#add-simple").click(function () {
-    var simpleTaskForm = document.forms.simpleTaskForm;
     var taskInfo = {
         type: "Simple task",
-        title: simpleTaskForm.stTitle.value,
-        status: simpleTaskForm.stStatus.value
+        title: UI.simpleTaskForm.stTitle.value,
+        status: UI.simpleTaskForm.stStatus.value
     };
     _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    simpleTaskForm.reset();
+    UI.simpleTaskForm.reset();
     addToList();
 });
 
 (0, _jquery2.default)("#add-home").click(function () {
-    var homeTaskForm = document.forms.homeTaskForm;
     var taskInfo = {
         type: "Home task",
-        title: homeTaskForm.htTitle.value,
-        status: homeTaskForm.htStatus.value,
-        description: homeTaskForm.htDescription.value
+        title: UI.homeTaskForm.htTitle.value,
+        status: UI.homeTaskForm.htStatus.value,
+        description: UI.homeTaskForm.htDescription.value
     };
     _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    homeTaskForm.reset();
+    UI.homeTaskForm.reset();
     addToList();
 });
 
 (0, _jquery2.default)("#add-project").click(function () {
-    var projectTaskForm = document.forms.projectTaskForm;
     var taskInfo = {
         type: "Project task",
-        title: projectTaskForm.ptTitle.value,
-        status: projectTaskForm.ptStatus.value,
-        description: projectTaskForm.ptDescription.value,
-        deadline: projectTaskForm.ptDeadline.value
+        title: UI.projectTaskForm.ptTitle.value,
+        status: UI.projectTaskForm.ptStatus.value,
+        description: UI.projectTaskForm.ptDescription.value,
+        deadline: UI.projectTaskForm.ptDeadline.value
     };
     _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    projectTaskForm.reset();
+    UI.projectTaskForm.reset();
     addToList();
 });
 
@@ -10655,9 +10645,7 @@ function showNewUserUi() {
     (0, _jquery2.default)(".sign-out").addClass("d-none");
     (0, _jquery2.default)(".sign-in").removeClass("d-none");
     (0, _jquery2.default)(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
-
-    var userForm = document.forms.userform;
-    userForm.reset();
+    UI.userForm.reset();
 }
 
 /* Show tasks form for current user */
@@ -10671,17 +10659,18 @@ function showTasksUi(user) {
 
 /* Show tabs available for user */
 function showAvailableTabs(user) {
-    var tabHome = (0, _jquery2.default)("#tab-home");
-    var tabProject = (0, _jquery2.default)("#tab-project");
     switch (user.role) {
-        case _constants2.default[0]:
+        case UI.roles[0]:
+            UI.tabHome.addClass("d-none");
+            UI.tabProject.addClass("d-none");
             break;
-        case _constants2.default[1]:
-            tabHome.removeClass("d-none");
+        case UI.roles[1]:
+            UI.tabHome.removeClass("d-none");
+            UI.tabProject.addClass("d-none");
             break;
-        case _constants2.default[2]:
-            tabHome.removeClass("d-none");
-            tabProject.removeClass("d-none");
+        case UI.roles[2]:
+            UI.tabHome.removeClass("d-none");
+            UI.tabProject.removeClass("d-none");
             break;
         default:
             console.log("Error read roles");
@@ -10707,9 +10696,8 @@ function addToList() {
         li.appendChild(span);
         list.appendChild(li);
     }
-    var tasklist = document.getElementById("tasklist");
-    tasklist.innerHTML = "";
-    tasklist.appendChild(list);
+    UI.tasklist.innerHTML = "";
+    UI.tasklist.appendChild(list);
 
     var closeButtons = document.getElementsByClassName("close");
 
@@ -10737,9 +10725,19 @@ function addToList() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var roles = ["User", "Student", "Developer"];
-
-exports.default = roles;
+var roles = exports.roles = ["User", "Student", "Developer"];
+var roleSelector = exports.roleSelector = document.getElementById("role-selector");
+var userSpecializationBlock = exports.userSpecializationBlock = $("#specialization");
+var userJobBlock = exports.userJobBlock = $("#job");
+var welcomeScreen = exports.welcomeScreen = $(".welcome-screen");
+var userInform = exports.userInform = $(".user-inform");
+var homeTaskForm = exports.homeTaskForm = document.forms.homeTaskForm;
+var simpleTaskForm = exports.simpleTaskForm = document.forms.simpleTaskForm;
+var projectTaskForm = exports.projectTaskForm = document.forms.projectTaskForm;
+var userForm = exports.userForm = document.forms.userform;
+var tabHome = exports.tabHome = $("#tab-home");
+var tabProject = exports.tabProject = $("#tab-project");
+var tasklist = exports.tasklist = document.getElementById("tasklist");
 
 /***/ }),
 /* 8 */

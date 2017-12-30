@@ -1,74 +1,64 @@
 import $ from 'jquery';
 import userStorage from "./Storage";
-import roles from './constants';
+import * as UI from './constants';
 import User from './User';
 import getTask from './Task';
 import Student from "./Student";
 import Developer from "./Developer";
 
-
 $( "#role-selector" ).change(function() {
-    const roleSelector = document.getElementById("role-selector");
-    const value = roleSelector.options[roleSelector.selectedIndex].value;
-
-    const userSpecializationBlock  = $("#specialization");
-    const userJobBlock = $("#job");
+    const value = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
 
     switch(value){
-        case roles[0] :
-            userSpecializationBlock.addClass("d-none");
-            userJobBlock.addClass("d-none");
+        case UI.roles[0] :
+            UI.userSpecializationBlock.addClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
-        case roles[1] :
-            userSpecializationBlock.removeClass("d-none");
-            userJobBlock.addClass("d-none");
+        case UI.roles[1] :
+            UI.userSpecializationBlock.removeClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
-        case roles[2] :
-            userSpecializationBlock.removeClass("d-none");
-            userJobBlock.removeClass("d-none");
+        case UI.roles[2] :
+            UI.userSpecializationBlock.removeClass("d-none");
+            UI.userJobBlock.removeClass("d-none");
             break;
         default :
-            userSpecializationBlock.addClass("d-none");
-            userJobBlock.addClass("d-none");
+            UI.userSpecializationBlock.addClass("d-none");
+            UI.userJobBlock.addClass("d-none");
             break;
     }
 });
 
 $( ".sign-in" ).click(function () {
-    const welcomeScreen = $(".welcome-screen");
-    const userInform = $(".user-inform");
-    welcomeScreen.addClass("d-none");
-    userInform.removeClass("d-none");
+    UI.welcomeScreen.addClass("d-none");
+    UI.userInform.removeClass("d-none");
 });
 
 $("#create-user-btn").click(function () {
-    const roleSelector = document.getElementById("role-selector");
-    const role = roleSelector.options[roleSelector.selectedIndex].value;
-    const userForm = document.forms.userform;
-
+    const role = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
     const userInfo = {
-        name: userForm.elements.name.value,
-        surname: userForm.elements.surname.value,
-        specialization: userForm.elements.specialization.value,
-        jobtitle: userForm.elements.job.value,
+        name: UI.userForm.elements.name.value,
+        surname: UI.userForm.elements.surname.value,
+        specialization: UI.userForm.elements.specialization.value,
+        jobtitle: UI.userForm.elements.job.value,
         role: role,
     };
     switch(role){
-        case roles[0] :
+        case UI.roles[0] :
             const user = new User(userInfo);
             userStorage.addUser(user);
             showTasksUi(user);
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case roles[1] :
+        case UI.roles[1] :
             const student = new Student(userInfo);
             userStorage.addUser(student);
             showTasksUi(student);
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case roles[2] :
+        case UI.roles[2] :
             const developer = new Developer(userInfo);
             userStorage.addUser(developer);
             showTasksUi(developer);
@@ -82,41 +72,38 @@ $("#create-user-btn").click(function () {
 });
 
 $("#add-simple").click(function () {
-    const simpleTaskForm = document.forms.simpleTaskForm;
     const taskInfo = {
         type: "Simple task",
-        title: simpleTaskForm.stTitle.value,
-        status: simpleTaskForm.stStatus.value,
+        title: UI.simpleTaskForm.stTitle.value,
+        status: UI.simpleTaskForm.stStatus.value,
     };
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
-    simpleTaskForm.reset();
+    UI.simpleTaskForm.reset();
     addToList();
 });
 
 $("#add-home").click(function () {
-    const homeTaskForm = document.forms.homeTaskForm;
     const taskInfo = {
         type: "Home task",
-        title: homeTaskForm.htTitle.value,
-        status: homeTaskForm.htStatus.value,
-        description: homeTaskForm.htDescription.value,
+        title: UI.homeTaskForm.htTitle.value,
+        status: UI.homeTaskForm.htStatus.value,
+        description: UI.homeTaskForm.htDescription.value,
     };
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
-    homeTaskForm.reset();
+    UI.homeTaskForm.reset();
     addToList();
 });
 
 $("#add-project").click(function () {
-    const projectTaskForm = document.forms.projectTaskForm;
     const taskInfo = {
         type: "Project task",
-        title: projectTaskForm.ptTitle.value,
-        status: projectTaskForm.ptStatus.value,
-        description: projectTaskForm.ptDescription.value,
-        deadline: projectTaskForm.ptDeadline.value,
+        title: UI.projectTaskForm.ptTitle.value,
+        status: UI.projectTaskForm.ptStatus.value,
+        description: UI.projectTaskForm.ptDescription.value,
+        deadline: UI.projectTaskForm.ptDeadline.value,
     };
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
-    projectTaskForm.reset();
+    UI.projectTaskForm.reset();
     addToList();
 });
 
@@ -131,9 +118,7 @@ function showNewUserUi() {
     $(".sign-out").addClass("d-none");
     $(".sign-in").removeClass("d-none");
     $(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
-
-    const userForm = document.forms.userform;
-    userForm.reset();
+    UI.userForm.reset();
 }
 
 /* Show tasks form for current user */
@@ -147,17 +132,18 @@ function showTasksUi(user) {
 
 /* Show tabs available for user */
 function showAvailableTabs(user) {
-    let tabHome = $("#tab-home");
-    let tabProject = $("#tab-project");
     switch (user.role) {
-        case roles[0] :
+        case UI.roles[0] :
+            UI.tabHome.addClass("d-none");
+            UI.tabProject.addClass("d-none");
             break;
-        case roles[1] :
-            tabHome.removeClass("d-none");
+        case UI.roles[1] :
+            UI.tabHome.removeClass("d-none");
+            UI.tabProject.addClass("d-none");
             break;
-        case roles[2] :
-            tabHome.removeClass("d-none");
-            tabProject.removeClass("d-none");
+        case UI.roles[2] :
+            UI.tabHome.removeClass("d-none");
+            UI.tabProject.removeClass("d-none");
             break;
         default :
             console.log("Error read roles");
@@ -183,9 +169,8 @@ function addToList(){
         li.appendChild(span);
         list.appendChild(li);
     }
-    let tasklist = document.getElementById("tasklist");
-    tasklist.innerHTML = "";
-    tasklist.appendChild(list);
+    UI.tasklist.innerHTML = "";
+    UI.tasklist.appendChild(list);
 
     const closeButtons = document.getElementsByClassName("close");
     for(let i = 0; i < closeButtons.length; i++){
