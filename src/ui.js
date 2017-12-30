@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import User from './User';
 import getTask from './Task';
+import Student from "./Student";
+import Developer from "./Developer";
 
 let users = [];
 const roles = ["User", "Student", "Developer"];
@@ -41,23 +43,43 @@ $( ".sign-in" ).click(function () {
 
 $("#create-user-btn").click(function () {
     const roleSelector = document.getElementById("role-selector");
-    const role = roleSelector.options[roleSelector.selectedIndex];
+    const role = roleSelector.options[roleSelector.selectedIndex].value;
     const userForm = document.forms.userform;
 
-    if(role.value !== "Select role..."){
-        const userInfo = {
-            name: userForm.elements.name.value,
-            surname: userForm.elements.surname.value,
-            specialization: userForm.elements.specialization.value,
-            jobtitle: userForm.elements.job.value,
-            role: role.value,
-        };
-        const user = new User(userInfo);
-        users.push(user);
-        showTasksUi(user);
-        showAvailableTabs(userInfo);
-    } else alert("Please, select role");
-    console.log(users);
+    const userInfo = {
+        name: userForm.elements.name.value,
+        surname: userForm.elements.surname.value,
+        specialization: userForm.elements.specialization.value,
+        jobtitle: userForm.elements.job.value,
+        role: role,
+    };
+    switch(role){
+        case roles[0] :
+            const user = new User(userInfo);
+            users.push(user);
+            showTasksUi(user);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        case roles[1] :
+            const student = new Student(userInfo);
+            users.push(student);
+            showTasksUi(student);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        case roles[2] :
+            const developer = new Developer(userInfo);
+            users.push(developer);
+            showTasksUi(developer);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        default :
+            alert("Please, select role");
+            console.log(users);
+            break;
+    }
 });
 
 $("#add-simple").click(function () {
@@ -67,9 +89,9 @@ $("#add-simple").click(function () {
         title: simpleTaskForm.stTitle.value,
         status: simpleTaskForm.stStatus.value,
     };
+
     users[users.length-1].addTask(getTask(taskInfo));
-    simpleTaskForm.stTitle.value = "";
-    simpleTaskForm.stStatus.value = "";
+    simpleTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -83,9 +105,7 @@ $("#add-home").click(function () {
         description: homeTaskForm.htDescription.value,
     };
     users[users.length-1].addTask(getTask(taskInfo));
-    homeTaskForm.htTitle.value = "";
-    homeTaskForm.htStatus.value = "";
-    homeTaskForm.htDescription.value = "";
+    homeTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -100,10 +120,7 @@ $("#add-project").click(function () {
         deadline: projectTaskForm.ptDeadline.value,
     };
     users[users.length-1].addTask(getTask(taskInfo));
-    projectTaskForm.ptTitle.value = "";
-    projectTaskForm.ptStatus.value = "";
-    projectTaskForm.ptDescription.value = "";
-    projectTaskForm.ptDeadline.value = "";
+    projectTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -120,10 +137,7 @@ function showNewUserUi() {
     $(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
 
     const userForm = document.forms.userform;
-    userForm.elements.name.value = "";
-    userForm.elements.surname.value = "";
-    userForm.elements.specialization.value = "";
-    userForm.elements.job.value = "";
+    userForm.reset();
 }
 
 /* Show tasks form for current user */
@@ -156,8 +170,6 @@ function showAvailableTabs(user) {
 
 /* Add user task to list */
 function addToList(){
-
-
     const list = window.document.createElement('ul');
     for (let i = 0; i < users[users.length-1].getTasks().length; i++){
         const li = document.createElement('li');

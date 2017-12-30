@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10346,8 +10346,6 @@ Object.defineProperty(exports, "__esModule", {
 function User(userInfo) {
     var _firstName = userInfo.firstName;
     var _lastName = userInfo.lastName;
-    var _specialization = userInfo.specialization;
-    var _jobtitle = userInfo.jobtitle;
     var _role = userInfo.role;
     var _tasks = [];
 
@@ -10356,12 +10354,6 @@ function User(userInfo) {
     };
     this.getLastName = function () {
         return _lastName;
-    };
-    this.getSpecialization = function () {
-        return _specialization;
-    };
-    this.getJob = function () {
-        return _jobtitle;
     };
     this.getRole = function () {
         return _role;
@@ -10372,10 +10364,11 @@ function User(userInfo) {
     this.setTasks = function (tasks) {
         _tasks = tasks;
     };
-    this.addTask = function (task) {
-        _tasks.push(task);
-    };
 }
+
+User.prototype.addTask = function (task) {
+    this.getTasks().push(task);
+};
 
 exports.default = User;
 
@@ -10408,17 +10401,43 @@ exports.default = getTask;
 "use strict";
 
 
-var _jquery = __webpack_require__(0);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-var _ui = __webpack_require__(4);
-
-var _ui2 = _interopRequireDefault(_ui);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _User = __webpack_require__(1);
 
 var _User2 = _interopRequireDefault(_User);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Student(userInfo) {
+    this.prototype = _User2.default.call(this, userInfo);
+    var _specialization = userInfo.specialization;
+    this.getSpecialization = function () {
+        return _specialization;
+    };
+}
+
+Student.prototype = Object.create(_User2.default.prototype);
+Student.prototype.constructor = Student;
+
+exports.default = Student;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _ui = __webpack_require__(5);
+
+var _ui2 = _interopRequireDefault(_ui);
 
 var _Task = __webpack_require__(2);
 
@@ -10427,7 +10446,7 @@ var _Task2 = _interopRequireDefault(_Task);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10444,6 +10463,14 @@ var _User2 = _interopRequireDefault(_User);
 var _Task = __webpack_require__(2);
 
 var _Task2 = _interopRequireDefault(_Task);
+
+var _Student = __webpack_require__(3);
+
+var _Student2 = _interopRequireDefault(_Student);
+
+var _Developer = __webpack_require__(6);
+
+var _Developer2 = _interopRequireDefault(_Developer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10486,23 +10513,43 @@ var roles = ["User", "Student", "Developer"];
 
 (0, _jquery2.default)("#create-user-btn").click(function () {
     var roleSelector = document.getElementById("role-selector");
-    var role = roleSelector.options[roleSelector.selectedIndex];
+    var role = roleSelector.options[roleSelector.selectedIndex].value;
     var userForm = document.forms.userform;
 
-    if (role.value !== "Select role...") {
-        var userInfo = {
-            name: userForm.elements.name.value,
-            surname: userForm.elements.surname.value,
-            specialization: userForm.elements.specialization.value,
-            jobtitle: userForm.elements.job.value,
-            role: role.value
-        };
-        var user = new _User2.default(userInfo);
-        users.push(user);
-        showTasksUi(user);
-        showAvailableTabs(userInfo);
-    } else alert("Please, select role");
-    console.log(users);
+    var userInfo = {
+        name: userForm.elements.name.value,
+        surname: userForm.elements.surname.value,
+        specialization: userForm.elements.specialization.value,
+        jobtitle: userForm.elements.job.value,
+        role: role
+    };
+    switch (role) {
+        case roles[0]:
+            var user = new _User2.default(userInfo);
+            users.push(user);
+            showTasksUi(user);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        case roles[1]:
+            var student = new _Student2.default(userInfo);
+            users.push(student);
+            showTasksUi(student);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        case roles[2]:
+            var developer = new _Developer2.default(userInfo);
+            users.push(developer);
+            showTasksUi(developer);
+            showAvailableTabs(userInfo);
+            addToList();
+            break;
+        default:
+            alert("Please, select role");
+            console.log(users);
+            break;
+    }
 });
 
 (0, _jquery2.default)("#add-simple").click(function () {
@@ -10512,9 +10559,9 @@ var roles = ["User", "Student", "Developer"];
         title: simpleTaskForm.stTitle.value,
         status: simpleTaskForm.stStatus.value
     };
+
     users[users.length - 1].addTask((0, _Task2.default)(taskInfo));
-    simpleTaskForm.stTitle.value = "";
-    simpleTaskForm.stStatus.value = "";
+    simpleTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -10528,9 +10575,7 @@ var roles = ["User", "Student", "Developer"];
         description: homeTaskForm.htDescription.value
     };
     users[users.length - 1].addTask((0, _Task2.default)(taskInfo));
-    homeTaskForm.htTitle.value = "";
-    homeTaskForm.htStatus.value = "";
-    homeTaskForm.htDescription.value = "";
+    homeTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -10545,10 +10590,7 @@ var roles = ["User", "Student", "Developer"];
         deadline: projectTaskForm.ptDeadline.value
     };
     users[users.length - 1].addTask((0, _Task2.default)(taskInfo));
-    projectTaskForm.ptTitle.value = "";
-    projectTaskForm.ptStatus.value = "";
-    projectTaskForm.ptDescription.value = "";
-    projectTaskForm.ptDeadline.value = "";
+    projectTaskForm.reset();
     addToList();
     console.log(users);
 });
@@ -10565,10 +10607,7 @@ function showNewUserUi() {
     (0, _jquery2.default)(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
 
     var userForm = document.forms.userform;
-    userForm.elements.name.value = "";
-    userForm.elements.surname.value = "";
-    userForm.elements.specialization.value = "";
-    userForm.elements.job.value = "";
+    userForm.reset();
 }
 
 /* Show tasks form for current user */
@@ -10601,7 +10640,6 @@ function showAvailableTabs(user) {
 
 /* Add user task to list */
 function addToList() {
-
     var list = window.document.createElement('ul');
     for (var i = 0; i < users[users.length - 1].getTasks().length; i++) {
         var li = document.createElement('li');
@@ -10636,6 +10674,36 @@ function addToList() {
         _loop(_i);
     }
 }
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _Student = __webpack_require__(3);
+
+var _Student2 = _interopRequireDefault(_Student);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Developer(userInfo) {
+    this.prototype = _Student2.default.call(this, userInfo);
+    var _jobtitle = userInfo.jobtitle;
+    this.getJob = function () {
+        return _jobtitle;
+    };
+}
+
+Developer.prototype = Object.create(_Student2.default.prototype);
+Developer.prototype.constructor = Developer;
+
+exports.default = Developer;
 
 /***/ })
 /******/ ]);

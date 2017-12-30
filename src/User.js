@@ -1,8 +1,6 @@
 function User(userInfo){
     let _firstName = userInfo.firstName;
     let _lastName = userInfo.lastName;
-    let _specialization = userInfo.specialization;
-    let _jobtitle = userInfo.jobtitle;
     let _role = userInfo.role;
     let _tasks = [];
 
@@ -11,12 +9,6 @@ function User(userInfo){
     };
     this.getLastName = function () {
         return _lastName;
-    };
-    this.getSpecialization = function () {
-        return _specialization;
-    };
-    this.getJob = function () {
-        return _jobtitle;
     };
     this.getRole = function () {
         return _role;
@@ -27,9 +19,10 @@ function User(userInfo){
     this.setTasks = function (tasks) {
         _tasks = tasks;
     };
-    this.addTask = function (task) {
-        _tasks.push(task);
-    };
 }
+
+User.prototype.addTask = function(task){
+  this.getTasks().push(task);
+};
 
 export default User;
