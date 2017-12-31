@@ -37,8 +37,8 @@ $( ".sign-in" ).click(function () {
 $("#create-user-btn").click(function () {
     const role = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
     const userInfo = {
-        name: UI.userForm.elements.name.value,
-        surname: UI.userForm.elements.surname.value,
+        firstName: UI.userForm.elements.name.value,
+        lastName: UI.userForm.elements.surname.value,
         specialization: UI.userForm.elements.specialization.value,
         jobtitle: UI.userForm.elements.job.value,
         role: role,
@@ -69,6 +69,7 @@ $("#create-user-btn").click(function () {
             alert("Please, select role");
             break;
     }
+    console.log(userStorage.getUsers());
 });
 
 $("#add-simple").click(function () {
@@ -128,6 +129,7 @@ function showTasksUi(user) {
     $(".sign-out").removeClass("d-none");
     $(".sign-in").addClass("d-none");
     $(".body").css('background-image', 'url()');
+    $(".list-title").text("List of " + user.getFirstName() + "'s tasks: ");
 }
 
 /* Show tabs available for user */

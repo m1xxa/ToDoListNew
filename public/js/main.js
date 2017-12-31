@@ -10564,8 +10564,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _jquery2.default)("#create-user-btn").click(function () {
     var role = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
     var userInfo = {
-        name: UI.userForm.elements.name.value,
-        surname: UI.userForm.elements.surname.value,
+        firstName: UI.userForm.elements.name.value,
+        lastName: UI.userForm.elements.surname.value,
         specialization: UI.userForm.elements.specialization.value,
         jobtitle: UI.userForm.elements.job.value,
         role: role
@@ -10596,6 +10596,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             alert("Please, select role");
             break;
     }
+    console.log(_Storage2.default.getUsers());
 });
 
 (0, _jquery2.default)("#add-simple").click(function () {
@@ -10655,6 +10656,7 @@ function showTasksUi(user) {
     (0, _jquery2.default)(".sign-out").removeClass("d-none");
     (0, _jquery2.default)(".sign-in").addClass("d-none");
     (0, _jquery2.default)(".body").css('background-image', 'url()');
+    (0, _jquery2.default)(".list-title").text("List of " + user.getFirstName() + "'s tasks: ");
 }
 
 /* Show tabs available for user */

@@ -81,3 +81,11 @@
     color: red;
     cursor: pointer;
 }
+
+ .left-todo-data {
+     background-color: ghostwhite;
+ }
+
+ .right-todo-data {
+     background-color: lavender;
+ }
