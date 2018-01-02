@@ -1,8 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: "./src/index.js", // string | object | array
-    // Here the application starts executing
+    entry: "./src/index.js",
     // and webpack starts bundling
 
     output: {
@@ -15,35 +14,25 @@ module.exports = {
         filename: "main.js", // string
         // the filename template for entry chunks
 
-        publicPath: "/assets/", // string
+        publicPath: "/", // string
         // the url to the output directory resolved relative to the HTML page
-
-        library: "MyLibrary", // string,
-        // the name of the exported library
-
-        libraryTarget: "umd", // universal module definition
-        // the type of the exported library
-
-        /* Advanced output configuration (click to show) */
     },
+
+    watch: true,
 
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: [/node_modules/],
-                use: [{
-                    loader: 'babel-loader',
-                    options: { presets: ['es2015'] }
-                }]
-            }
-        ]
+        loaders: [{
+            test:    /\.js$/,
+            include: __dirname + '/public',
+            loader:  "babel?presets[]=es2015"
+        }, {
+            test:   /\.styl$/,
+            loader: 'style!css!stylus?resolve url'
+        }],
     },
 
+
     devServer: {
-        proxy: { // proxy URLs to backend development server
-            '/api': 'http://localhost:3000'
-        },
         contentBase: path.join(__dirname, 'public'), // boolean | string | array, static file location
         compress: true, // enable gzip compression
         historyApiFallback: true, // true for index.html upon 404, object for multiple paths
@@ -53,7 +42,5 @@ module.exports = {
         // ...
     },
 
-    plugins: [
-        // ...
-    ]
+
 };

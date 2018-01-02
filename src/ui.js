@@ -8,7 +8,6 @@ import Developer from "./Developer";
 
 $( "#role-selector" ).change(function() {
     const value = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
-
     switch(value){
         case UI.roles[0] :
             UI.userSpecializationBlock.addClass("d-none");
@@ -43,25 +42,42 @@ $("#create-user-btn").click(function () {
         jobtitle: UI.userForm.elements.job.value,
         role: role,
     };
+    const currentUser = userStorage.haveUser(userInfo);
+    console.log("cu", currentUser);
     switch(role){
         case UI.roles[0] :
-            const user = new User(userInfo);
-            userStorage.addUser(user);
-            showTasksUi(user);
+            if(currentUser < 0){
+                const user = new User(userInfo);
+                userStorage.addUser(user);
+                showTasksUi(user);
+            } else {
+                userStorage.setCurrentUser(currentUser);
+                showTasksUi(userStorage.getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
         case UI.roles[1] :
-            const student = new Student(userInfo);
-            userStorage.addUser(student);
-            showTasksUi(student);
+            if(currentUser < 0){
+                const student = new Student(userInfo);
+                userStorage.addUser(student);
+                showTasksUi(student);
+            } else {
+                userStorage.setCurrentUser(currentUser);
+                showTasksUi(userStorage.getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
         case UI.roles[2] :
-            const developer = new Developer(userInfo);
-            userStorage.addUser(developer);
-            showTasksUi(developer);
+            if(currentUser < 0){
+                const developer = new Developer(userInfo);
+                userStorage.addUser(developer);
+                showTasksUi(developer);
+            } else {
+                userStorage.setCurrentUser(currentUser);
+                showTasksUi(userStorage.getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
@@ -69,6 +85,7 @@ $("#create-user-btn").click(function () {
             alert("Please, select role");
             break;
     }
+    storeData();
     console.log(userStorage.getUsers());
 });
 
@@ -81,6 +98,7 @@ $("#add-simple").click(function () {
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
     UI.simpleTaskForm.reset();
     addToList();
+    storeData();
 });
 
 $("#add-home").click(function () {
@@ -93,6 +111,7 @@ $("#add-home").click(function () {
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
     UI.homeTaskForm.reset();
     addToList();
+    storeData();
 });
 
 $("#add-project").click(function () {
@@ -106,10 +125,12 @@ $("#add-project").click(function () {
     userStorage.getCurrentUser().addTask(getTask(taskInfo));
     UI.projectTaskForm.reset();
     addToList();
+    storeData();
 });
 
 $(".sign-out").click(function () {
     showNewUserUi();
+    console.log("ustr", userStorage.getUsers());
 });
 
 /* Show form for create new user */
@@ -183,4 +204,8 @@ function addToList(){
             this.parentNode.parentNode.removeChild(this.parentNode);
         };
     }
+}
+
+function storeData() {
+    //TODO
 }

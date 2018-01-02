@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["MyLibrary"] = factory();
-	else
-		root["MyLibrary"] = factory();
-})(typeof self !== 'undefined' ? self : this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -67,7 +57,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/assets/";
+/******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 5);
@@ -10335,16 +10325,11 @@ return jQuery;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function getTask(taskInfo) {
-    var currentTask = {};
+function getTask (taskInfo) {
+    const currentTask = {};
     currentTask['type'] = taskInfo.type;
     currentTask['title'] = taskInfo.title;
     currentTask['status'] = taskInfo.status;
@@ -10353,68 +10338,78 @@ function getTask(taskInfo) {
     return currentTask;
 }
 
-exports.default = getTask;
+/* harmony default export */ __webpack_exports__["a"] = (getTask);
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 function Storage() {
-    var _users = [];
+    let _users = [];
+    let _current;
 
-    this.addUser = function (user) {
+    this.addUser = function(user){
         _users.push(user);
+        _current = _users.length-1;
     };
-
+    
     this.removeUser = function (id) {
         delete _users[id];
+        _current = _users.length-1;
     };
 
     this.getUserByName = function (name) {
-        for (var i = 0; i < _users.length; i++) {
-            if (_users[i].name = name) return _users[i];
+        for(let i = 0; i < _users.length; i++){
+            if(_users[i].name = name) return _users[i];
         }
         return null;
     };
 
-    this.getUsers = function () {
+    this.getUsers = function(){
         return _users;
+    };
+
+    this.setUsers = function (users) {
+        _users = users;
     };
 
     this.getUser = function (id) {
         return _users[id];
     };
 
-    this.getCurrentUser = function () {
-        return _users[_users.length - 1];
+    this.getCurrentUser = function(){
+        return _users[_current];
+    };
+
+    this.setCurrentUser = function (id) {
+        _current = id;
+    };
+
+    this.haveUser = function(userInfo){
+        for(let index = 0; index < _users.length; index++){
+            if(_users[index].getFirstName() === userInfo.firstName && _users[index].getLastName() === userInfo.lastName){
+                return index;
+            }
+        }
+        return -1;
     };
 }
 
-var userStorage = new Storage();
+let userStorage = new Storage();
 
-exports.default = userStorage;
+/* harmony default export */ __webpack_exports__["a"] = (userStorage);
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function User(userInfo) {
-    var _firstName = userInfo.firstName;
-    var _lastName = userInfo.lastName;
-    var _role = userInfo.role;
-    var _tasks = [];
+function User(userInfo){
+    let _firstName = userInfo.firstName;
+    let _lastName = userInfo.lastName;
+    let _role = userInfo.role;
+    let _tasks = [];
 
     this.getFirstName = function () {
         return _firstName;
@@ -10433,344 +10428,345 @@ function User(userInfo) {
     };
 }
 
-User.prototype.addTask = function (task) {
-    this.getTasks().push(task);
+User.prototype.addTask = function(task){
+  this.getTasks().push(task);
 };
 
-exports.default = User;
+/* harmony default export */ __webpack_exports__["a"] = (User);
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__User__ = __webpack_require__(3);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _User = __webpack_require__(3);
-
-var _User2 = _interopRequireDefault(_User);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Student(userInfo) {
-    this.prototype = _User2.default.call(this, userInfo);
-    var _specialization = userInfo.specialization;
+    this.prototype = __WEBPACK_IMPORTED_MODULE_0__User__["a" /* default */].call(this, userInfo);
+    let _specialization = userInfo.specialization;
     this.getSpecialization = function () {
         return _specialization;
     };
 }
 
-Student.prototype = Object.create(_User2.default.prototype);
+Student.prototype = Object.create(__WEBPACK_IMPORTED_MODULE_0__User__["a" /* default */].prototype);
 Student.prototype.constructor = Student;
 
-exports.default = Student;
+/* harmony default export */ __webpack_exports__["a"] = (Student);
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Task__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Storage__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ui__ = __webpack_require__(6);
 
 
-var _jquery = __webpack_require__(0);
 
-var _jquery2 = _interopRequireDefault(_jquery);
 
-var _Task = __webpack_require__(1);
 
-var _Task2 = _interopRequireDefault(_Task);
 
-var _Storage = __webpack_require__(2);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
-var _ui = __webpack_require__(6);
-
-var _ui2 = _interopRequireDefault(_ui);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Storage__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__User__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Task__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Student__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Developer__ = __webpack_require__(8);
 
 
-var _jquery = __webpack_require__(0);
 
-var _jquery2 = _interopRequireDefault(_jquery);
 
-var _Storage = __webpack_require__(2);
 
-var _Storage2 = _interopRequireDefault(_Storage);
 
-var _constants = __webpack_require__(7);
 
-var UI = _interopRequireWildcard(_constants);
 
-var _User = __webpack_require__(3);
-
-var _User2 = _interopRequireDefault(_User);
-
-var _Task = __webpack_require__(1);
-
-var _Task2 = _interopRequireDefault(_Task);
-
-var _Student = __webpack_require__(4);
-
-var _Student2 = _interopRequireDefault(_Student);
-
-var _Developer = __webpack_require__(8);
-
-var _Developer2 = _interopRequireDefault(_Developer);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(0, _jquery2.default)("#role-selector").change(function () {
-    var value = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
-
-    switch (value) {
-        case UI.roles[0]:
-            UI.userSpecializationBlock.addClass("d-none");
-            UI.userJobBlock.addClass("d-none");
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()( "#role-selector" ).change(function() {
+    const value = __WEBPACK_IMPORTED_MODULE_2__constants__["c" /* roleSelector */].options[__WEBPACK_IMPORTED_MODULE_2__constants__["c" /* roleSelector */].selectedIndex].value;
+    switch(value){
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][0] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["l" /* userSpecializationBlock */].addClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* userJobBlock */].addClass("d-none");
             break;
-        case UI.roles[1]:
-            UI.userSpecializationBlock.removeClass("d-none");
-            UI.userJobBlock.addClass("d-none");
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][1] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["l" /* userSpecializationBlock */].removeClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* userJobBlock */].addClass("d-none");
             break;
-        case UI.roles[2]:
-            UI.userSpecializationBlock.removeClass("d-none");
-            UI.userJobBlock.removeClass("d-none");
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][2] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["l" /* userSpecializationBlock */].removeClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* userJobBlock */].removeClass("d-none");
             break;
-        default:
-            UI.userSpecializationBlock.addClass("d-none");
-            UI.userJobBlock.addClass("d-none");
+        default :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["l" /* userSpecializationBlock */].addClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["k" /* userJobBlock */].addClass("d-none");
             break;
     }
 });
 
-(0, _jquery2.default)(".sign-in").click(function () {
-    UI.welcomeScreen.addClass("d-none");
-    UI.userInform.removeClass("d-none");
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()( ".sign-in" ).click(function () {
+    __WEBPACK_IMPORTED_MODULE_2__constants__["m" /* welcomeScreen */].addClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_2__constants__["j" /* userInform */].removeClass("d-none");
 });
 
-(0, _jquery2.default)("#create-user-btn").click(function () {
-    var role = UI.roleSelector.options[UI.roleSelector.selectedIndex].value;
-    var userInfo = {
-        firstName: UI.userForm.elements.name.value,
-        lastName: UI.userForm.elements.surname.value,
-        specialization: UI.userForm.elements.specialization.value,
-        jobtitle: UI.userForm.elements.job.value,
-        role: role
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()("#create-user-btn").click(function () {
+    const role = __WEBPACK_IMPORTED_MODULE_2__constants__["c" /* roleSelector */].options[__WEBPACK_IMPORTED_MODULE_2__constants__["c" /* roleSelector */].selectedIndex].value;
+    const userInfo = {
+        firstName: __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* userForm */].elements.name.value,
+        lastName: __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* userForm */].elements.surname.value,
+        specialization: __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* userForm */].elements.specialization.value,
+        jobtitle: __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* userForm */].elements.job.value,
+        role: role,
     };
-    switch (role) {
-        case UI.roles[0]:
-            var user = new _User2.default(userInfo);
-            _Storage2.default.addUser(user);
-            showTasksUi(user);
+    const currentUser = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].haveUser(userInfo);
+    console.log("cu", currentUser);
+    switch(role){
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][0] :
+            if(currentUser < 0){
+                const user = new __WEBPACK_IMPORTED_MODULE_3__User__["a" /* default */](userInfo);
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].addUser(user);
+                showTasksUi(user);
+            } else {
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].setCurrentUser(currentUser);
+                showTasksUi(__WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case UI.roles[1]:
-            var student = new _Student2.default(userInfo);
-            _Storage2.default.addUser(student);
-            showTasksUi(student);
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][1] :
+            if(currentUser < 0){
+                const student = new __WEBPACK_IMPORTED_MODULE_5__Student__["a" /* default */](userInfo);
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].addUser(student);
+                showTasksUi(student);
+            } else {
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].setCurrentUser(currentUser);
+                showTasksUi(__WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
-        case UI.roles[2]:
-            var developer = new _Developer2.default(userInfo);
-            _Storage2.default.addUser(developer);
-            showTasksUi(developer);
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][2] :
+            if(currentUser < 0){
+                const developer = new __WEBPACK_IMPORTED_MODULE_6__Developer__["a" /* default */](userInfo);
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].addUser(developer);
+                showTasksUi(developer);
+            } else {
+                __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].setCurrentUser(currentUser);
+                showTasksUi(__WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser());
+            }
             showAvailableTabs(userInfo);
             addToList();
             break;
-        default:
+        default :
             alert("Please, select role");
             break;
     }
-    console.log(_Storage2.default.getUsers());
+    storeData();
+    console.log(__WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getUsers());
 });
 
-(0, _jquery2.default)("#add-simple").click(function () {
-    var taskInfo = {
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()("#add-simple").click(function () {
+    const taskInfo = {
         type: "Simple task",
-        title: UI.simpleTaskForm.stTitle.value,
-        status: UI.simpleTaskForm.stStatus.value
+        title: __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* simpleTaskForm */].stTitle.value,
+        status: __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* simpleTaskForm */].stStatus.value,
     };
-    _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    UI.simpleTaskForm.reset();
+    __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().addTask(Object(__WEBPACK_IMPORTED_MODULE_4__Task__["a" /* default */])(taskInfo));
+    __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* simpleTaskForm */].reset();
     addToList();
+    storeData();
 });
 
-(0, _jquery2.default)("#add-home").click(function () {
-    var taskInfo = {
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()("#add-home").click(function () {
+    const taskInfo = {
         type: "Home task",
-        title: UI.homeTaskForm.htTitle.value,
-        status: UI.homeTaskForm.htStatus.value,
-        description: UI.homeTaskForm.htDescription.value
+        title: __WEBPACK_IMPORTED_MODULE_2__constants__["a" /* homeTaskForm */].htTitle.value,
+        status: __WEBPACK_IMPORTED_MODULE_2__constants__["a" /* homeTaskForm */].htStatus.value,
+        description: __WEBPACK_IMPORTED_MODULE_2__constants__["a" /* homeTaskForm */].htDescription.value,
     };
-    _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    UI.homeTaskForm.reset();
+    __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().addTask(Object(__WEBPACK_IMPORTED_MODULE_4__Task__["a" /* default */])(taskInfo));
+    __WEBPACK_IMPORTED_MODULE_2__constants__["a" /* homeTaskForm */].reset();
     addToList();
+    storeData();
 });
 
-(0, _jquery2.default)("#add-project").click(function () {
-    var taskInfo = {
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()("#add-project").click(function () {
+    const taskInfo = {
         type: "Project task",
-        title: UI.projectTaskForm.ptTitle.value,
-        status: UI.projectTaskForm.ptStatus.value,
-        description: UI.projectTaskForm.ptDescription.value,
-        deadline: UI.projectTaskForm.ptDeadline.value
+        title: __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* projectTaskForm */].ptTitle.value,
+        status: __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* projectTaskForm */].ptStatus.value,
+        description: __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* projectTaskForm */].ptDescription.value,
+        deadline: __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* projectTaskForm */].ptDeadline.value,
     };
-    _Storage2.default.getCurrentUser().addTask((0, _Task2.default)(taskInfo));
-    UI.projectTaskForm.reset();
+    __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().addTask(Object(__WEBPACK_IMPORTED_MODULE_4__Task__["a" /* default */])(taskInfo));
+    __WEBPACK_IMPORTED_MODULE_2__constants__["b" /* projectTaskForm */].reset();
     addToList();
+    storeData();
 });
 
-(0, _jquery2.default)(".sign-out").click(function () {
+__WEBPACK_IMPORTED_MODULE_0_jquery___default()(".sign-out").click(function () {
     showNewUserUi();
+    console.log("ustr", __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getUsers());
 });
 
 /* Show form for create new user */
 function showNewUserUi() {
-    (0, _jquery2.default)(".user-inform").removeClass("d-none");
-    (0, _jquery2.default)(".todo-data").addClass("d-none");
-    (0, _jquery2.default)(".sign-out").addClass("d-none");
-    (0, _jquery2.default)(".sign-in").removeClass("d-none");
-    (0, _jquery2.default)(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
-    UI.userForm.reset();
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".user-inform").removeClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".todo-data").addClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".sign-out").addClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".sign-in").removeClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".body").css('background-image', 'url(https://d3ptyyxy2at9ui.cloudfront.net/bc51cd8ccfb3787ee54ad263924a1a0a.jpg)');
+    __WEBPACK_IMPORTED_MODULE_2__constants__["i" /* userForm */].reset();
 }
 
 /* Show tasks form for current user */
 function showTasksUi(user) {
-    (0, _jquery2.default)(".user-inform").addClass("d-none");
-    (0, _jquery2.default)(".todo-data").removeClass("d-none");
-    (0, _jquery2.default)(".sign-out").removeClass("d-none");
-    (0, _jquery2.default)(".sign-in").addClass("d-none");
-    (0, _jquery2.default)(".body").css('background-image', 'url()');
-    (0, _jquery2.default)(".list-title").text("List of " + user.getFirstName() + "'s tasks: ");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".user-inform").addClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".todo-data").removeClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".sign-out").removeClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".sign-in").addClass("d-none");
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".body").css('background-image', 'url()');
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(".list-title").text("List of " + user.getFirstName() + "'s tasks: ");
 }
 
 /* Show tabs available for user */
 function showAvailableTabs(user) {
     switch (user.role) {
-        case UI.roles[0]:
-            UI.tabHome.addClass("d-none");
-            UI.tabProject.addClass("d-none");
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][0] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["f" /* tabHome */].addClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["g" /* tabProject */].addClass("d-none");
             break;
-        case UI.roles[1]:
-            UI.tabHome.removeClass("d-none");
-            UI.tabProject.addClass("d-none");
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][1] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["f" /* tabHome */].removeClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["g" /* tabProject */].addClass("d-none");
             break;
-        case UI.roles[2]:
-            UI.tabHome.removeClass("d-none");
-            UI.tabProject.removeClass("d-none");
+        case __WEBPACK_IMPORTED_MODULE_2__constants__["d" /* roles */][2] :
+            __WEBPACK_IMPORTED_MODULE_2__constants__["f" /* tabHome */].removeClass("d-none");
+            __WEBPACK_IMPORTED_MODULE_2__constants__["g" /* tabProject */].removeClass("d-none");
             break;
-        default:
+        default :
             console.log("Error read roles");
     }
 }
 
 /* Add user task to list */
-function addToList() {
-    var list = window.document.createElement('ul');
-    for (var i = 0; i < _Storage2.default.getCurrentUser().getTasks().length; i++) {
-        var li = document.createElement('li');
+function addToList(){
+    const list = window.document.createElement('ul');
+    for (let i = 0; i < __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks().length; i++){
+        const li = document.createElement('li');
         li.className = "list-group-item";
-        var type = _Storage2.default.getCurrentUser().getTasks()[i].type || "";
-        var title = _Storage2.default.getCurrentUser().getTasks()[i].title || "";
-        var status = _Storage2.default.getCurrentUser().getTasks()[i].status || "";
-        var description = _Storage2.default.getCurrentUser().getTasks()[i].description || "";
-        var deadline = _Storage2.default.getCurrentUser().getTasks()[i].deadline || "";
+        let type = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks()[i].type || "";
+        let title = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks()[i].title || "";
+        let status = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks()[i].status || "";
+        let description = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks()[i].description || "";
+        let deadline = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks()[i].deadline || "";
         li.innerHTML = "<b>" + type + ": </b>" + title + " " + status + " " + description + " " + deadline;
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode('\xD7');
+        const span = document.createElement("SPAN");
+        const txt = document.createTextNode("\u00D7");
         span.className = "close";
         span.appendChild(txt);
         li.appendChild(span);
         list.appendChild(li);
     }
-    UI.tasklist.innerHTML = "";
-    UI.tasklist.appendChild(list);
+    __WEBPACK_IMPORTED_MODULE_2__constants__["h" /* tasklist */].innerHTML = "";
+    __WEBPACK_IMPORTED_MODULE_2__constants__["h" /* tasklist */].appendChild(list);
 
-    var closeButtons = document.getElementsByClassName("close");
-
-    var _loop = function _loop(_i) {
-        closeButtons[_i].onclick = function () {
-            var t = _Storage2.default.getCurrentUser().getTasks();
-            t.splice(_i, 1);
-            _Storage2.default.getCurrentUser().setTasks(t);
+    const closeButtons = document.getElementsByClassName("close");
+    for(let i = 0; i < closeButtons.length; i++){
+        closeButtons[i].onclick = function(){
+            let t = __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().getTasks();
+            t.splice(i, 1);
+            __WEBPACK_IMPORTED_MODULE_1__Storage__["a" /* default */].getCurrentUser().setTasks(t);
             this.parentNode.parentNode.removeChild(this.parentNode);
         };
-    };
-
-    for (var _i = 0; _i < closeButtons.length; _i++) {
-        _loop(_i);
     }
+}
+
+function storeData() {
+    //TODO
 }
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+const roles = ["User", "Student", "Developer"];
+/* harmony export (immutable) */ __webpack_exports__["d"] = roles;
+
+const roleSelector = document.getElementById("role-selector");
+/* harmony export (immutable) */ __webpack_exports__["c"] = roleSelector;
+
+const userSpecializationBlock  = $("#specialization");
+/* harmony export (immutable) */ __webpack_exports__["l"] = userSpecializationBlock;
+
+const userJobBlock = $("#job");
+/* harmony export (immutable) */ __webpack_exports__["k"] = userJobBlock;
+
+const welcomeScreen = $(".welcome-screen");
+/* harmony export (immutable) */ __webpack_exports__["m"] = welcomeScreen;
+
+const userInform = $(".user-inform");
+/* harmony export (immutable) */ __webpack_exports__["j"] = userInform;
+
+const homeTaskForm = document.forms.homeTaskForm;
+/* harmony export (immutable) */ __webpack_exports__["a"] = homeTaskForm;
+
+const simpleTaskForm = document.forms.simpleTaskForm;
+/* harmony export (immutable) */ __webpack_exports__["e"] = simpleTaskForm;
+
+const projectTaskForm = document.forms.projectTaskForm;
+/* harmony export (immutable) */ __webpack_exports__["b"] = projectTaskForm;
+
+const userForm = document.forms.userform;
+/* harmony export (immutable) */ __webpack_exports__["i"] = userForm;
+
+const tabHome = $("#tab-home");
+/* harmony export (immutable) */ __webpack_exports__["f"] = tabHome;
+
+const tabProject = $("#tab-project");
+/* harmony export (immutable) */ __webpack_exports__["g"] = tabProject;
+
+const tasklist = document.getElementById("tasklist");
+/* harmony export (immutable) */ __webpack_exports__["h"] = tasklist;
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var roles = exports.roles = ["User", "Student", "Developer"];
-var roleSelector = exports.roleSelector = document.getElementById("role-selector");
-var userSpecializationBlock = exports.userSpecializationBlock = $("#specialization");
-var userJobBlock = exports.userJobBlock = $("#job");
-var welcomeScreen = exports.welcomeScreen = $(".welcome-screen");
-var userInform = exports.userInform = $(".user-inform");
-var homeTaskForm = exports.homeTaskForm = document.forms.homeTaskForm;
-var simpleTaskForm = exports.simpleTaskForm = document.forms.simpleTaskForm;
-var projectTaskForm = exports.projectTaskForm = document.forms.projectTaskForm;
-var userForm = exports.userForm = document.forms.userform;
-var tabHome = exports.tabHome = $("#tab-home");
-var tabProject = exports.tabProject = $("#tab-project");
-var tasklist = exports.tasklist = document.getElementById("tasklist");
+
+
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Student__ = __webpack_require__(4);
 
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _Student = __webpack_require__(4);
-
-var _Student2 = _interopRequireDefault(_Student);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Developer(userInfo) {
-    this.prototype = _Student2.default.call(this, userInfo);
-    var _jobtitle = userInfo.jobtitle;
+    this.prototype = __WEBPACK_IMPORTED_MODULE_0__Student__["a" /* default */].call(this,userInfo);
+    let _jobtitle = userInfo.jobtitle;
     this.getJob = function () {
         return _jobtitle;
     };
 }
 
-Developer.prototype = Object.create(_Student2.default.prototype);
+Developer.prototype = Object.create(__WEBPACK_IMPORTED_MODULE_0__Student__["a" /* default */].prototype);
 Developer.prototype.constructor = Developer;
 
-exports.default = Developer;
+/* harmony default export */ __webpack_exports__["a"] = (Developer);
+
 
 /***/ })
 /******/ ]);
-});
