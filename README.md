@@ -12,7 +12,7 @@ Sample of simple JavaScript TODO List with following features:
 
 Display tasks in list with the possibility of their removal.
 
-![Screenshot](/assets/screenshot.jpg)
+![Screenshot](/assets/screenshot.JPG)
 
 The application is created on ES6 + JQuerry without using classes.
 The project is assembled using the Webpack with
